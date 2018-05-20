@@ -1,2 +1,2 @@
 # JOS
-6.828 coded repository
+6.828 code repository
