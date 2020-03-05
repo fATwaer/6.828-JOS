@@ -65,7 +65,40 @@ trap_init(void)
 	extern struct Segdesc gdt[];
 
 	// LAB 3: Your code here.
+    // LAB 3: Your code here.
+    void divid_entry();
+    void debug_entry();
+    void nmi_entry();
+    void brkpt_entry();
+    void oflow_entry();
+    void bound_entry();
+    void illop_entry();
+    void device_entry();
+    void dblflt_entry();
+    void tss_entry();
+    void segnp_entry();
+    void stack_entry();
+    void gpflt_entry();
+    void pgflt_entry();
+    void fperr_entry();
+    void syscall_entry();
 
+    SETGATE(idt[T_DIVIDE], 1, GD_KT, divid_entry, 0);
+    SETGATE(idt[T_DEBUG], 1, GD_KT, debug_entry, 3);
+    SETGATE(idt[T_NMI], 1, GD_KT, nmi_entry, 0);
+    SETGATE(idt[T_BRKPT], 1, GD_KT, brkpt_entry, 3);
+    SETGATE(idt[T_OFLOW], 1, GD_KT, oflow_entry, 0);
+    SETGATE(idt[T_BOUND], 1, GD_KT, bound_entry, 0);
+    SETGATE(idt[T_ILLOP], 1, GD_KT, illop_entry, 0);
+    SETGATE(idt[T_DEVICE], 1, GD_KT, device_entry, 0);
+    SETGATE(idt[T_DBLFLT], 1, GD_KT, dblflt_entry, 0);
+    SETGATE(idt[T_TSS], 1, GD_KT, tss_entry, 0);
+    SETGATE(idt[T_SEGNP], 1, GD_KT, segnp_entry, 0);
+    SETGATE(idt[T_STACK], 1, GD_KT, stack_entry, 0);
+    SETGATE(idt[T_GPFLT], 1, GD_KT, gpflt_entry, 0);
+    SETGATE(idt[T_PGFLT], 1, GD_KT, pgflt_entry, 0);
+    SETGATE(idt[T_FPERR], 1, GD_KT, fperr_entry, 0);
+    SETGATE(idt[T_SYSCALL], 1, GD_KT, syscall_entry, 3);
 	// Per-CPU setup 
 	trap_init_percpu();
 }
@@ -144,6 +177,20 @@ trap_dispatch(struct Trapframe *tf)
 {
 	// Handle processor exceptions.
 	// LAB 3: Your code here.
+	switch (tf->tf_trapno) {
+		case T_PGFLT:
+			page_fault_handler(tf);
+			return;
+		case T_BRKPT:
+			monitor(tf);
+			return;
+		case T_SYSCALL:
+			tf->tf_regs.reg_eax = syscall(
+					tf->tf_regs.reg_eax, tf->tf_regs.reg_edx,
+					tf->tf_regs.reg_ecx, tf->tf_regs.reg_ebx,
+	                tf->tf_regs.reg_edi, tf->tf_regs.reg_esi);
+			return;
+	}
 
 	// Unexpected trap: The user process or the kernel has a bug.
 	print_trapframe(tf);
@@ -181,6 +228,10 @@ trap(struct Trapframe *tf)
 		tf = &curenv->env_tf;
 	}
 
+	// kernel page fault, should panic
+	if ((tf->tf_cs & 3) == 0)
+        panic("kernel page fault");
+
 	// Record that tf is the last real trapframe so
 	// print_trapframe can print some additional information.
 	last_tf = tf;
@@ -205,6 +256,7 @@ page_fault_handler(struct Trapframe *tf)
 	// Handle kernel-mode page faults.
 
 	// LAB 3: Your code here.
+
 
 	// We've already handled kernel-mode exceptions, so if we get here,
 	// the page fault happened in user mode.
