@@ -64,7 +64,22 @@ TRAPHANDLER(pgflt_entry, T_PGFLT);
 TRAPHANDLER_NOEC(fperr_entry, T_FPERR);
 TRAPHANDLER_NOEC(syscall_entry, T_SYSCALL);
 
-
+TRAPHANDLER_NOEC(irq_handler0, 32);
+TRAPHANDLER_NOEC(irq_handler1, 33);
+TRAPHANDLER_NOEC(irq_handler2, 34);
+TRAPHANDLER_NOEC(irq_handler3, 35);
+TRAPHANDLER_NOEC(irq_handler4, 36);
+TRAPHANDLER_NOEC(irq_handler5, 37);
+TRAPHANDLER_NOEC(irq_handler6, 38);
+TRAPHANDLER_NOEC(irq_handler7, 39);
+TRAPHANDLER_NOEC(irq_handler8, 40);
+TRAPHANDLER_NOEC(irq_handler9, 41);
+TRAPHANDLER_NOEC(irq_handler10, 42);
+TRAPHANDLER_NOEC(irq_handler11, 43);
+TRAPHANDLER_NOEC(irq_handler12, 44);
+TRAPHANDLER_NOEC(irq_handler13, 45);
+TRAPHANDLER_NOEC(irq_handler14, 46);
+TRAPHANDLER_NOEC(irq_handler15, 47);
 /*
  * Lab 3: Your code here for _alltraps
  */

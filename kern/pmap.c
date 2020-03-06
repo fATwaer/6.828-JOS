@@ -265,7 +265,17 @@ mem_init_mp(void)
 	//     Permissions: kernel RW, user NONE
 	//
 	// LAB 4: Your code here:
+    size_t i;
+    uint32_t kstacktop_i = KSTACKTOP;
 
+    for (i = 0; i < NCPU; i++) {
+        /*stack*/
+        boot_map_region(kern_pgdir, kstacktop_i - KSTKSIZE, KSTKSIZE, PADDR(percpu_kstacks[i]), PTE_W | PTE_P);
+        kstacktop_i -= KSTKSIZE;
+
+        /*guard gap*/
+        kstacktop_i -= KSTKGAP;
+    }
 }
 
 // --------------------------------------------------------------
@@ -305,20 +315,19 @@ page_init(void)
 	// NB: DO NOT actually touch the physical memory corresponding to
 	// free pages!
     size_t i;
-    size_t IOhole_pages = (EXTPHYSMEM - IOPHYSMEM) /PGSIZE;
     size_t allocated_pages = ((uint32_t)boot_alloc(0) - KERNBASE) / PGSIZE;
-    for (i = 0; i < npages; i++) {
-		if (i == 0)
-			pages[i].pp_ref = 1;                            
-		else if (i >= npages_basemem && 
-				i < npages_basemem + IOhole_pages + allocated_pages){
-			pages[i].pp_ref = 1;                           // see figure 
-		} else {
-			pages[i].pp_ref = 0;
-			pages[i].pp_link = page_free_list;             // a linkedlist for 
-			page_free_list = &pages[i];                    // that the pages is free .
-		}
-    }	
+    size_t IOhole_pages = (EXTPHYSMEM - IOPHYSMEM) /PGSIZE;
+    for (i = 1; i < npages; i++) {
+        if(i == MPENTRY_PADDR/PGSIZE)
+            continue;                  // BIOS
+        else if (i >= npages_basemem && i < npages_basemem + allocated_pages + IOhole_pages){
+            continue;                  // see figure
+        } else {
+            pages[i].pp_ref = 0;
+            pages[i].pp_link = page_free_list;             // a linkedlist for
+            page_free_list = &pages[i];                    // that the pages is free .
+        }
+    }
 }
 
 //
@@ -611,7 +620,18 @@ mmio_map_region(physaddr_t pa, size_t size)
 	// Hint: The staff solution uses boot_map_region.
 	//
 	// Your code here:
-	panic("mmio_map_region not implemented");
+    if (base + size > MMIOLIM)
+        panic("mmio memory space is not enough .");
+
+    uint32_t va = base;
+    pa = ROUNDDOWN((uint32_t)pa, PGSIZE);
+    size = ROUNDUP((uint32_t)size, PGSIZE);
+
+    boot_map_region(kern_pgdir, base, size, pa, PTE_PCD|PTE_PWT|PTE_W);
+
+    base += size;
+
+    return (void *)va;
 }
 
 static uintptr_t user_mem_check_addr;
