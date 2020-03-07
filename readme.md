@@ -55,3 +55,34 @@ Part C score: 25/25
 
 Score: 80/80
 ```
+
+### lab5
+
+``` bash
+internal FS tests [fs/test.c]: OK (2.6s)
+  fs i/o: OK
+  check_bc: OK
+  check_super: OK
+  check_bitmap: OK
+  alloc_block: OK
+  file_open: OK
+  file_get_block: OK
+  file_flush/file_truncate/file rewrite: OK
+testfile: OK (2.3s)
+  serve_open/file_stat/file_close: OK
+  file_read: OK
+  file_write: OK
+  file_read after file_write: OK
+  open: OK
+  large file: OK
+spawn via spawnhello: OK (2.4s)
+Protection I/O space: OK (2.4s)
+    (Old jos.out.faultio failure log removed)
+PTE_SHARE [testpteshare]: OK (2.3s)
+PTE_SHARE [testfdsharing]: OK (1.4s)
+start the shell [icode]: Timeout! OK (31.1s)
+testshell: OK (4.0s)
+primespipe: OK (6.7s)
+Score: 150/150
+
+```
