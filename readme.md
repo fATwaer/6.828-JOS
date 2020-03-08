@@ -1,4 +1,4 @@
-# Welcome to JOS
+# JOS
 
 ## Writeup
 
