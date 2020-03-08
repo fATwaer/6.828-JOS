@@ -123,7 +123,6 @@ devfile_read(struct Fd *fd, void *buf, size_t n)
 		return r;
 	assert(r <= n);
 	assert(r <= PGSIZE);
-    cprintf("%d %s\n", r, fsipcbuf.readRet.ret_buf);
 	memmove(buf, fsipcbuf.readRet.ret_buf, r);
 	return r;
 }

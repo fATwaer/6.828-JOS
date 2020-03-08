@@ -1,34 +1,68 @@
 ## Make grade
 
-### lab1
-
-### lab2
-
-### lab3
+### Boot
 
 ``` bash
-divzero: OK (1.0s) 
-softint: OK (1.0s) 
-badsegment: OK (1.0s) 
+running JOS: (1.5s) 
+  printf: OK 
+  backtrace count: OK 
+  backtrace arguments: OK 
+  backtrace symbols: OK 
+  backtrace lines: OK 
+Score: 50/50
+```
+
+### Memory Management
+
+``` bash
+divzero: OK (1.6s)
+    (Old jos.out.divzero failure log removed)
+softint: OK (2.2s)
+    (Old jos.out.softint failure log removed)
+badsegment: OK (1.9s)
+    (Old jos.out.badsegment failure log removed)
 Part A score: 30/30
 
-faultread: OK (1.0s) 
-faultreadkernel: OK (1.9s) 
-faultwrite: OK (1.2s) 
-faultwritekernel: OK (2.0s) 
-breakpoint: OK (1.9s) 
-testbss: OK (2.1s) 
-hello: OK (1.9s) 
-buggyhello: OK (2.2s) 
+faultread: OK (1.9s)
+faultreadkernel: OK (2.1s)
+faultwrite: OK (2.0s)
+faultwritekernel: OK (1.9s)
+breakpoint: OK (1.2s)
+testbss: OK (1.8s)
+hello: OK (2.1s)
+buggyhello: OK (2.0s)
+buggyhello2: OK (2.0s)
+evilhello: OK (2.1s)
+Part B score: 50/50
+
+Score: 80/80
+```
+
+### User Environment
+
+``` bash
+divzero: OK (1.0s)
+softint: OK (1.0s)
+badsegment: OK (1.0s)
+Part A score: 30/30
+
+faultread: OK (1.0s)
+faultreadkernel: OK (1.9s)
+faultwrite: OK (1.2s)
+faultwritekernel: OK (2.0s)
+breakpoint: OK (1.9s)
+testbss: OK (2.1s)
+hello: OK (1.9s)
+buggyhello: OK (2.2s)
     (Old jos.out.buggyhello failure log removed)
-buggyhello2: OK (1.9s) 
+buggyhello2: OK (1.9s)
     (Old jos.out.buggyhello2 failure log removed)
-evilhello: OK (2.1s) 
+evilhello: OK (2.1s)
     (Old jos.out.evilhello failure log removed)
 Part B score: 50/50
 ```
 
-### lab4
+### Preemptive Multitasking
 
 ``` bash
 dumbfork: OK (2.1s)
@@ -56,7 +90,7 @@ Part C score: 25/25
 Score: 80/80
 ```
 
-### lab5
+### File System
 
 ``` bash
 internal FS tests [fs/test.c]: OK (2.6s)
@@ -85,4 +119,25 @@ testshell: OK (4.0s)
 primespipe: OK (6.7s)
 Score: 150/150
 
+```
+
+### Network Driver
+
+``` bash
+testtime: OK (8.0s)
+pci attach: OK (1.2s)
+testoutput [5 packets]: OK (2.2s)
+testoutput [100 packets]: OK (2.6s)
+Part A score: 35/35
+
+testinput [5 packets]: OK (2.7s)
+testinput [100 packets]: OK (1.7s)
+tcp echo server [echosrv]: OK (2.3s)
+web server [httpd]:
+  http://localhost:26002/: OK (1.4s)
+  http://localhost:26002/index.html: OK (1.3s)
+  http://localhost:26002/random_file.txt: OK (2.5s)
+Part B score: 70/70
+
+Score: 105/105
 ```
